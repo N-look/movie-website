@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router";
+import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import { Toaster } from "react-hot-toast";
 import { useAuthStore } from "./store/authStore";
@@ -21,8 +21,10 @@ const App = () => {
   const { fetchUser, fetchingUser, authMessage } = useAuthStore();
 
   useEffect(() => {
-    fetchUser()
-  }, [fetchUser])
+    fetchUser();
+    // Run only once on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) // Run only once on mount; we don't need to depend on the function reference
 
   if (fetchingUser) {
     return (

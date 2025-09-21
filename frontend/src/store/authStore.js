@@ -1,9 +1,14 @@
 import { create } from "zustand";
 import axios from "axios";
 
-axios.defaults.withCredentials = true;
-
 const API_URL = "https://aiflix-6ual.onrender.com/api";
+
+// Create a dedicated Axios instance with timeout
+const api = axios.create({
+  baseURL: API_URL,
+  withCredentials: true,
+  timeout: 8000, // 8 second timeout
+});
 
 export const useAuthStore = create((set) => ({
   // initial states
@@ -20,7 +25,7 @@ export const useAuthStore = create((set) => ({
     set({ isLoading: true, message: null, authMessage: "Signing up..." });
 
     try {
-      const response = await axios.post(`${API_URL}/signup`, {
+      const response = await api.post(`/signup`, {
         username,
         email,
         password,
@@ -30,7 +35,7 @@ export const useAuthStore = create((set) => ({
     } catch (error) {
       set({
         isLoading: false,
-        error: error.response.data.message || "Error Signing up",
+        error: error?.response?.data?.message || "Error Signing up",
         authMessage: null,
       });
 
@@ -42,7 +47,7 @@ export const useAuthStore = create((set) => ({
     set({ isLoading: true, message: null, error: null, authMessage: "Logging in..." });
 
     try {
-      const response = await axios.post(`${API_URL}/login`, {
+      const response = await api.post(`/login`, {
         username,
         password,
       });
@@ -60,7 +65,7 @@ export const useAuthStore = create((set) => ({
     } catch (error) {
       set({
         isLoading: false,
-        error: error.response.data.message || "Error logging in",
+        error: error?.response?.data?.message || "Error logging in",
         authMessage: null,
       });
 
@@ -72,7 +77,7 @@ export const useAuthStore = create((set) => ({
     set({ fetchingUser: true, error: null, authMessage: "Fetching user..." });
 
     try {
-      const response = await axios.get(`${API_URL}/fetch-user`);
+      const response = await api.get(`/fetch-user`);
       set({ user: response.data.user, fetchingUser: false, authMessage: null });
     } catch (error) {
       set({
@@ -81,8 +86,7 @@ export const useAuthStore = create((set) => ({
         user: null,
         authMessage: null,
       });
-
-      throw error;
+      // Don't throw to prevent unhandled promise rejections
     }
   },
 
@@ -90,7 +94,7 @@ export const useAuthStore = create((set) => ({
     set({ isLoading: true, error: null, message: null, authMessage: "Logging out..." });
 
     try {
-      const response = await axios.post(`${API_URL}/logout`);
+      const response = await api.post(`/logout`);
       const { message } = response.data;
       set({
         message,
@@ -103,7 +107,7 @@ export const useAuthStore = create((set) => ({
     } catch (error) {
       set({
         isLoading: false,
-        error: error.response.data.message || "Error logging out",
+        error: error?.response?.data?.message || "Error logging out",
       });
 
       throw error;
