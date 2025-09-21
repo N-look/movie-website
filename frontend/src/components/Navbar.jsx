@@ -1,6 +1,6 @@
 import { HelpCircle, LogOut, Search, Settings, X } from "lucide-react";
 import Logo from "../assets/logo.png";
-import { Link, useLocation } from "react-router";
+import { Link, useLocation } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
 import { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
