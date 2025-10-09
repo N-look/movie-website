@@ -8,7 +8,9 @@ const CategoryPageLayout = ({
   category, 
   apiEndpoint, 
   showHero = true,
-  mediaType = 'movie'
+  mediaType = 'movie',
+  // Allow injecting a custom grid (e.g., AnimeGrid). Defaults to MovieGrid.
+  GridComponent = MovieGrid,
 }) => {
   const [trendingImages, setTrendingImages] = useState([]);
 
@@ -16,8 +18,10 @@ const CategoryPageLayout = ({
   useEffect(() => {
     const fetchTrending = async () => {
       try {
+        // Fallback to 'tv' trending if mediaType is not supported by TMDb (e.g., 'anime')
+        const trendingType = ['movie', 'tv'].includes(mediaType) ? mediaType : 'tv';
         const response = await fetch(
-          `https://api.themoviedb.org/3/trending/${mediaType}/week?api_key=${import.meta.env.VITE_TMDB_API_KEY}`
+          `https://api.themoviedb.org/3/trending/${trendingType}/week?api_key=${import.meta.env.VITE_TMDB_API_KEY}`
         );
         const data = await response.json();
         
@@ -49,12 +53,19 @@ const CategoryPageLayout = ({
 
       {/* Content Section */}
       <div className="p-4 md:p-8">
-        <MovieGrid 
-          title={`${title} ${mediaType === 'tv' ? 'Shows' : 'Movies'}`}
-          category={category}
-          apiEndpoint={apiEndpoint}
-          mediaType={mediaType}
-        />
+        {(() => {
+          const suffix = mediaType === 'tv' ? 'Shows' : mediaType === 'movie' ? 'Movies' : '';
+          const computedTitle = suffix ? `${title} ${suffix}` : title;
+          const Grid = GridComponent;
+          return (
+            <Grid 
+              title={computedTitle}
+              category={category}
+              apiEndpoint={apiEndpoint}
+              mediaType={mediaType}
+            />
+          );
+        })()}
       </div>
     </div>
   );

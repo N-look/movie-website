@@ -55,7 +55,7 @@ const WatchTvShow = () => {
     nextEpisode: "true",
     autoplayNextEpisode: "true",
     overlay: "true",
-    color: "3B82F6",
+    color: "ffbd7b",
   });
   if (resumeTimestamp != null) tvParams.set("progress", String(resumeTimestamp));
   const playerSrc = `https://player.videasy.net/tv/${id}/${season}/${episode}?${tvParams.toString()}`;
