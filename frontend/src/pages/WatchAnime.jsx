@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
-const WatchMovie = () => {
-  const { id } = useParams();
+const WatchTvShow = () => {
+  const { id, season: seasonParam, episode: episodeParam } = useParams();
   const [playerLoading, setPlayerLoading] = useState(true);
   const [resumeTimestamp, setResumeTimestamp] = useState(null);
+
+  const season = useMemo(() => Number(seasonParam) || 1, [seasonParam]);
+  const episode = useMemo(() => Number(episodeParam) || 1, [episodeParam]);
 
   // Load saved watch progress to resume playback
   useEffect(() => {
@@ -23,7 +26,7 @@ const WatchMovie = () => {
     } catch (e) {
       setResumeTimestamp(null);
     }
-  }, [id]);
+  }, [id, season, episode]);
 
   // Save watch progress from Videasy player via postMessage
   useEffect(() => {
@@ -46,15 +49,21 @@ const WatchMovie = () => {
     return () => window.removeEventListener("message", onMessage);
   }, []);
 
-  // Build Videasy player URL with optional resume progress
-  const movieParams = new URLSearchParams({ overlay: "true", color: "ffbd7b" });
-  if (resumeTimestamp != null) movieParams.set("progress", String(resumeTimestamp));
-  const playerSrc = `https://player.videasy.net/movie/${id}?${movieParams.toString()}`;
+  // Build Videasy Anime player URL with optional resume progress
+  const animeParams = new URLSearchParams({
+    episodeSelector: "true",
+    nextEpisode: "true",
+    autoplayNextEpisode: "true",
+    overlay: "true",
+    color: "ffbd7b",
+  });
+  if (resumeTimestamp != null) animeParams.set("progress", String(resumeTimestamp));
+  const playerSrc = `https://player.videasy.net/anime/${id}/${season}/${episode}?${animeParams.toString()}`;
 
   return (
     <div className="min-h-screen bg-[#0b0b0b] text-white">
       <div className="max-w-[1400px] mx-auto px-4 py-4 flex items-center gap-3">
-        <Link to={`/movie/${id}`} className="text-sm text-gray-300 hover:text-white underline">
+        <Link to={`/anime/${id}`} className="text-sm text-gray-300 hover:text-white underline">
           Back to Details
         </Link>
       </div>
@@ -80,4 +89,4 @@ const WatchMovie = () => {
   );
 };
 
-export default WatchMovie;
+export default WatchAnime;
