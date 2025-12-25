@@ -16,8 +16,8 @@ const Navbar = () => {
 
   const avatarUrl = user
     ? `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(
-        user.username
-      )}`
+      user.username
+    )}`
     : "";
 
   const handleLogout = async () => {
@@ -53,8 +53,8 @@ const Navbar = () => {
         scope === "movie"
           ? "https://api.themoviedb.org/3/search/movie"
           : scope === "tv"
-          ? "https://api.themoviedb.org/3/search/tv"
-          : "https://api.themoviedb.org/3/search/multi";
+            ? "https://api.themoviedb.org/3/search/tv"
+            : "https://api.themoviedb.org/3/search/multi";
 
       const url = `${baseUrl}?query=${encodeURIComponent(query)}&language=en-US&page=1&include_adult=true`;
 
@@ -127,27 +127,27 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-black/70 backdrop-blur-2xl text-gray-200 flex justify-between items-center px-4 lg:px-8 h-16 text-sm font-medium sticky top-0 z-50 border-b border-white/10">
+    <nav className="bg-black/70 backdrop-blur-2xl text-gray-200 flex justify-between items-center px-4 lg:px-4 h-16 text-sm font-medium sticky top-0 z-50 border-b border-white/10">
       {/* Logo */}
       <Link to="/" className="flex items-center gap-2 group">
-        <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/20 group-hover:shadow-purple-500/40 transition-all duration-300 group-hover:scale-105">
-          <Film className="w-5 h-5 text-white" />
+        <div className="w-8 h-8 lg:w-9 lg:h-9 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/20 group-hover:shadow-purple-500/40 transition-all duration-300 group-hover:scale-105">
+          <Film className="w-4 h-4 lg:w-5 lg:h-5 text-white" />
         </div>
-        <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-purple-500 bg-clip-text text-transparent">
+        <span className="text-xl lg:text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-purple-500 bg-clip-text text-transparent">
           Nflix
         </span>
       </Link>
 
       {/* Mobile menu button */}
-      <button 
-        className="xl:hidden p-2 rounded-xl bg-white/5 hover:bg-white/10 transition-all"
+      <button
+        className="lg:hidden p-2 rounded-xl bg-white/5 hover:bg-white/10 transition-all"
         onClick={() => setShowMobileMenu(!showMobileMenu)}
       >
         <Menu className="w-5 h-5" />
       </button>
 
       {/* Desktop Navigation */}
-      <ul className="hidden xl:flex items-center bg-white/5 rounded-2xl p-1 border border-white/5">
+      <ul className="hidden lg:flex items-center bg-white/5 rounded-2xl p-1 border border-white/5 gap-1">
         {[
           { path: '/', label: 'Home' },
           { path: '/movies', label: 'Movies' },
@@ -159,11 +159,10 @@ const Navbar = () => {
           <li key={item.path}>
             <Link
               to={item.path}
-              className={`px-4 py-2 rounded-xl transition-all duration-300 block ${
-                isActive(item.path)
+              className={`px-3 py-1.5 lg:px-4 lg:py-2 rounded-xl transition-all duration-300 block text-xs lg:text-sm ${isActive(item.path)
                   ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white border border-purple-500/30'
                   : 'text-gray-400 hover:text-white hover:bg-white/5'
-              }`}
+                }`}
             >
               {item.label}
             </Link>
@@ -173,7 +172,7 @@ const Navbar = () => {
 
       {/* Mobile Navigation Dropdown */}
       {showMobileMenu && (
-        <div className="absolute top-full left-0 right-0 bg-black/95 backdrop-blur-2xl border-b border-white/10 xl:hidden">
+        <div className="absolute top-full left-0 right-0 bg-black/95 backdrop-blur-2xl border-b border-white/10 lg:hidden">
           <ul className="p-4 space-y-2">
             {[
               { path: '/', label: 'Home' },
@@ -187,11 +186,10 @@ const Navbar = () => {
                 <Link
                   to={item.path}
                   onClick={() => setShowMobileMenu(false)}
-                  className={`px-4 py-3 rounded-2xl transition-all duration-300 block ${
-                    isActive(item.path)
+                  className={`px-4 py-3 rounded-2xl transition-all duration-300 block ${isActive(item.path)
                       ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white border border-purple-500/30'
                       : 'text-gray-400 hover:text-white hover:bg-white/5'
-                  }`}
+                    }`}
                 >
                   {item.label}
                 </Link>
@@ -202,7 +200,7 @@ const Navbar = () => {
       )}
 
       {/* Right Section */}
-      <div className="hidden xl:flex items-center gap-3 relative">
+      <div className="hidden lg:flex items-center gap-2 lg:gap-3 relative">
         <div className="relative hidden md:inline-flex search-container">
           <div className="relative">
             <input
@@ -210,23 +208,23 @@ const Navbar = () => {
               value={searchQuery}
               onChange={handleSearchChange}
               onFocus={() => setShowSearchResults(true)}
-              className="bg-white/5 text-white px-5 py-2.5 rounded-2xl min-w-72 pr-12 outline-none border border-white/10 focus:border-purple-500 focus:bg-white/10 transition-all duration-300 placeholder-gray-500"
-              placeholder="Search movies & TV..."
+              className="bg-white/5 text-white px-4 py-2 lg:px-5 lg:py-2.5 rounded-2xl min-w-48 lg:min-w-72 pr-10 lg:pr-12 outline-none border border-white/10 focus:border-purple-500 focus:bg-white/10 transition-all duration-300 placeholder-gray-500 text-xs lg:text-sm"
+              placeholder="Search..."
             />
-            <div className="absolute top-1/2 -translate-y-1/2 right-4 flex items-center space-x-2">
+            <div className="absolute top-1/2 -translate-y-1/2 right-3 lg:right-4 flex items-center space-x-2">
               {isSearching ? (
-                <div className="w-5 h-5 border-2 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+                <div className="w-4 h-4 lg:w-5 lg:h-5 border-2 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
               ) : searchQuery ? (
-                <X 
-                  className="w-5 h-5 text-gray-400 hover:text-white cursor-pointer" 
+                <X
+                  className="w-4 h-4 lg:w-5 lg:h-5 text-gray-400 hover:text-white cursor-pointer"
                   onClick={clearSearch}
                 />
               ) : (
-                <Search className="w-5 h-5 text-gray-400" />
+                <Search className="w-4 h-4 lg:w-5 lg:h-5 text-gray-400" />
               )}
             </div>
           </div>
-          
+
           {/* Search Results Dropdown */}
           {showSearchResults && searchResults.length > 0 && (
             <div className="absolute top-full left-0 right-0 mt-3 bg-black/90 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-2xl z-50 max-h-96 overflow-y-auto">
@@ -260,16 +258,16 @@ const Navbar = () => {
             </div>
           )}
         </div>
-    
+
         <Link to={user ? "ai-recommendations" : "signin"}>
-          <button className="bg-gradient-to-r from-blue-500 to-purple-500 px-5 py-2.5 rounded-2xl text-white cursor-pointer shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300">
-            Get AI Movie Picks
+          <button className="bg-gradient-to-r from-blue-500 to-purple-500 px-4 py-2 lg:px-5 lg:py-2.5 rounded-2xl text-white cursor-pointer shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300 text-xs lg:text-sm">
+            AI Picks
           </button>
         </Link>
 
         {!user ? (
           <Link to={"/signin"}>
-            <button className="border border-white/20 rounded-2xl py-2.5 px-5 cursor-pointer bg-white/5 hover:bg-white/10 backdrop-blur-sm transition-all duration-300">
+            <button className="border border-white/20 rounded-2xl py-2 px-4 lg:py-2.5 lg:px-5 cursor-pointer bg-white/5 hover:bg-white/10 backdrop-blur-sm transition-all duration-300 text-xs lg:text-sm">
               Sign In
             </button>
           </Link>

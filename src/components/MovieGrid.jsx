@@ -59,7 +59,7 @@ const MovieGrid = ({ category, apiEndpoint, mediaType = 'movie' }) => {
   // Infinite scroll observer
   useEffect(() => {
     if (observerRef.current) observerRef.current.disconnect();
-    
+
     observerRef.current = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasMore && !loading) {
@@ -97,7 +97,7 @@ const MovieGrid = ({ category, apiEndpoint, mediaType = 'movie' }) => {
 
   return (
     <div className="text-white">
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4 sm:gap-6">
         {data.map((item) => {
           // ✅ Always build an image URL or fallback
           let imageUrl = null;
@@ -110,51 +110,38 @@ const MovieGrid = ({ category, apiEndpoint, mediaType = 'movie' }) => {
           return (
             <div
               key={item.id}
-              className="bg-white/5 backdrop-blur-sm rounded-3xl overflow-hidden hover:scale-105 hover:bg-white/10 transition-all duration-300 group border border-white/5 hover:border-white/10 shadow-lg hover:shadow-xl"
+              className="group"
             >
-              <Link to={`/${mediaType === 'tv' ? 'tv' : 'movie'}/${item.id}`}>
-                <div className="relative group">
+              <Link to={`/${mediaType === 'tv' ? 'tv' : 'movie'}/${item.id}`} className="block">
+                <div className="relative overflow-hidden rounded-xl aspect-[2/3] mb-3">
                   <img
-                    src={
-                      imageUrl
-                    }
+                    src={imageUrl}
                     alt={item.title || item.name || mediaType === 'tv' ? 'TV Show' : 'Movie'}
-                    className="w-full h-64 md:h-80 object-cover transition duration-300 group-hover:brightness-50"
+                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
                     onError={(e) => {
                       e.currentTarget.src =
                         'https://via.placeholder.com/300x450/333333/ffffff?text=No+Image';
                     }}
                   />
 
-                  <div className="absolute inset-0 bg-transparent transition-all duration-300 flex items-center justify-center">
-                    <Play className="w-12 h-12 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  </div>
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors" />
                 </div>
 
+                <h3 className="text-sm font-medium text-gray-200 group-hover:text-white transition-colors line-clamp-1">
+                  {item.title || item.name}
+                </h3>
 
-                <div className="p-4">
-                  <h3 className="font-semibold text-sm md:text-base mb-2 line-clamp-2">
-                    {item.title || item.name}
-                  </h3>
-
-                  <div className="flex items-center justify-between text-xs text-gray-400 mb-2">
-                    <div className="flex items-center space-x-1">
-                      <Star className="w-3 h-3 text-yellow-500" />
-                      <span>{item.vote_average?.toFixed(1) || 'N/A'}</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <Calendar className="w-3 h-3" />
-                      <span>
-                        {item.release_date?.slice(0, 4) ||
-                          item.first_air_date?.slice(0, 4) ||
-                          'N/A'}
-                      </span>
-                    </div>
+                <div className="flex items-center gap-2 text-xs text-gray-500 mt-1">
+                  <span>
+                    {item.release_date?.slice(0, 4) ||
+                      item.first_air_date?.slice(0, 4) ||
+                      'N/A'}
+                  </span>
+                  <span>•</span>
+                  <div className="flex items-center text-yellow-500">
+                    <Star className="w-3 h-3 mr-1 fill-yellow-500" />
+                    <span>{item.vote_average?.toFixed(1) || 'N/A'}</span>
                   </div>
-
-                  <p className="text-xs text-gray-300 line-clamp-2">
-                    {item.overview || 'No description available.'}
-                  </p>
                 </div>
               </Link>
             </div>
