@@ -5,18 +5,19 @@ import { useAuthStore } from "./store/authStore";
 import { useEffect, lazy, Suspense } from "react";
 
 const Homepage = lazy(() => import("./pages/Homepage"));
-const Moviepage = lazy(() => import("./pages/Moviepage"));
+const MovieDetails = lazy(() => import("./pages/MovieDetails"));
 const SignIn = lazy(() => import("./pages/SignIn"));
 const SignUp = lazy(() => import("./pages/SignUp"));
 const AIRecommendations = lazy(() => import("./pages/AIRecommendations"));
 const TvShowsPage = lazy(() => import("./pages/TvShowsPage"));
-const TvShowPage = lazy(() => import("./pages/TvShowPage"));
+const TvShowDetails = lazy(() => import("./pages/TvShowDetails"));
 const MoviesPage = lazy(() => import("./pages/MoviesPage"));
 const AnimePage = lazy(() => import("./pages/AnimePage"));
 const TopRatedPage = lazy(() => import("./pages/TopRatedPage"));
 const PopularPage = lazy(() => import("./pages/PopularPage"));
 const WatchMovie = lazy(() => import("./pages/WatchMovie"));
 const WatchTvShow = lazy(() => import("./pages/WatchTvShow"));
+const AnimeDetails = lazy(() => import("./pages/AnimeDetails"));
 
 const App = () => {
   const { fetchUser, fetchingUser, authMessage } = useAuthStore();
@@ -37,19 +38,20 @@ const App = () => {
   }
   return (
     <div>
-      <Toaster/>
+      <Toaster />
       <Navbar />
       <Suspense fallback={<div className="flex justify-center items-center h-screen"><p className="text-purple-500">Loading...</p></div>}>
         <Routes>
           <Route path={'/'} element={<Homepage />} />
-          <Route path={'/movie/:id'} element={<Moviepage />} />
+          <Route path={'/movie/:id'} element={<MovieDetails />} />
           <Route path={'/signin'} element={<SignIn />} />
           <Route path={'/signup'} element={<SignUp />} />
           <Route path={'/ai-recommendations'} element={<AIRecommendations />} />
-          <Route path={'/tv/:id'} element={<TvShowPage />} />
+          <Route path={'/tv/:id'} element={<TvShowDetails />} />
           <Route path={'/tv-shows'} element={<TvShowsPage />} />
           <Route path={'/movies'} element={<MoviesPage />} />
           <Route path={'/anime'} element={<AnimePage />} />
+          <Route path={'/anime/:id'} element={<AnimeDetails />} />
           <Route path={'/top-rated'} element={<TopRatedPage />} />
           <Route path={'/popular'} element={<PopularPage />} />
           <Route path={'/watch/movie/:id'} element={<WatchMovie />} />

@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { Play, Star, Calendar } from 'lucide-react';
 
 // GraphQL query to fetch trending/popular anime
@@ -145,7 +146,7 @@ const AnimeGrid = ({ sort = ['TRENDING_DESC'] }) => {
             key={item.id}
             className="group"
           >
-            <a href={item.anilistUrl} target="_blank" rel="noopener noreferrer" className="block">
+            <Link to={`/anime/${item.id}`} className="block">
               <div className="relative overflow-hidden rounded-xl aspect-[2/3] mb-3">
                 <img
                   src={item.imageUrl || 'https://via.placeholder.com/300x450/333333/ffffff?text=No+Image'}
@@ -172,7 +173,7 @@ const AnimeGrid = ({ sort = ['TRENDING_DESC'] }) => {
                   <span>{item.score}</span>
                 </div>
               </div>
-            </a>
+            </Link>
           </div>
         ))}
       </div>

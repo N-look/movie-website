@@ -1,6 +1,6 @@
-# Personal Movie Website
+# Movie Website
 
-A modern movie and TV discovery web app built with React and Vite. Browse movies, TV shows, anime, and get AI-powered recommendations, with authentication and saved data backed by Supabase.
+A modern movie and TV website built with React and Vite. Browse movies, TV shows, anime, and get AI-powered recommendations, with authentication and saved data backed by Supabase.
 
 ## Tech Stack
 
@@ -93,4 +93,4 @@ movie-website/
 
 ## License
 
-This project is for personal / portfolio use. Adapt or extend the license section as needed.
+This project is for portfolio use. Adapt or extend the license section as needed.
