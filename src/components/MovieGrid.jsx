@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router';
 import { Play, Star, Calendar } from 'lucide-react';
 
-const MovieGrid = ({ title, category, apiEndpoint, showTitle = true, mediaType = 'movie' }) => {
+const MovieGrid = ({ category, apiEndpoint, mediaType = 'movie' }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -97,8 +97,6 @@ const MovieGrid = ({ title, category, apiEndpoint, showTitle = true, mediaType =
 
   return (
     <div className="text-white">
-      {showTitle && <h2 className="text-3xl font-bold mb-8 text-center">{title}</h2>}
-
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
         {data.map((item) => {
           // ✅ Always build an image URL or fallback

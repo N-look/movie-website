@@ -26,7 +26,7 @@ const CategoryHero = ({ title, description, images = [] }) => {
               }}
             >
               {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#181818] via-[#18181880] to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0b0b0b] via-[#0b0b0b]/60 to-transparent"></div>
 
               {/* Content */}
               <div className="relative z-10 h-full flex flex-col justify-end p-8">

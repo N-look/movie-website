@@ -32,25 +32,39 @@ const Hero = () => {
     return <p>Loading...</p>;
   }
   return (
-    <div className="relative w-screen -mx-5 -mt-5">
-      <div className="relative">
+    <div className="relative w-full h-[70vh] md:h-[85vh]">
+      <div className="absolute inset-0">
         <img
           src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
           alt="bg-img"
-          className="w-screen h-[480px] object-cover object-center"
+          className="w-full h-full object-cover object-center"
         />
-        <div className="absolute bottom-0 left-0 right-0 h-3/4 bg-gradient-to-t from-[#181818] via-[#18181880] to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0b0b0b] via-[#0b0b0b]/60 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0b0b0b]/80 via-transparent to-transparent"></div>
       </div>
 
-      <div className="flex space-x-2 md:space-x-4 absolute bottom-3 left-4 md:bottom-8 md:left-10 font-medium">
-        <button className="flex justify-center items-center bg-white/90 backdrop-blur-sm hover:bg-white text-purple-600 py-3 px-6 rounded-2xl cursor-pointer text-sm md:text-base font-medium shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
-          <Bookmark className="mr-2 w-4 h-5 md:w-5 md:h-5" /> Save for Later
-        </button>
-        <Link to={`/movie/${movie.id}`}>
-<button className="flex justify-center items-center bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 px-6 rounded-2xl cursor-pointer text-sm md:text-base font-medium shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 hover:scale-105 transition-all duration-300">
-          <Play className="mr-2 w-4 h-5 md:w-5 md:h-5" /> Watch Now
-        </button>
-        </Link>
+      <div className="absolute bottom-0 left-0 w-full p-6 md:p-12 pb-40 md:pb-48 flex flex-col items-start gap-6 z-10">
+        <h1 className="text-4xl md:text-6xl font-bold text-white max-w-3xl drop-shadow-2xl leading-tight">
+          {movie.title}
+        </h1>
+        <p className="text-gray-200 max-w-2xl line-clamp-3 text-sm md:text-lg drop-shadow-md">
+          {movie.overview}
+        </p>
+
+        <div className="flex items-center gap-4 pt-2">
+          <button className="flex items-center gap-2 px-8 py-4 bg-white/5 backdrop-blur-xl border border-white/10 text-white rounded-2xl font-semibold hover:bg-white/10 hover:border-white/20 hover:scale-105 transition-all duration-300 group">
+            <Bookmark className="w-5 h-5 group-hover:text-purple-400 transition-colors" /> 
+            Save for Later
+          </button>
+          
+          <Link to={`/watch/movie/${movie.id}`}>
+            <button className="flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl font-semibold shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 hover:scale-105 transition-all duration-300 relative overflow-hidden group">
+              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+              <Play className="w-5 h-5 fill-current relative z-10" /> 
+              <span className="relative z-10">Watch Now</span>
+            </button>
+          </Link>
+        </div>
       </div>
     </div>
   );

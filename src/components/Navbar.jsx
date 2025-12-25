@@ -155,7 +155,6 @@ const Navbar = () => {
           { path: '/anime', label: 'Anime' },
           { path: '/top-rated', label: 'Top Rated' },
           { path: '/popular', label: 'Popular' },
-          { path: '/upcoming', label: 'Upcoming' },
         ].map((item) => (
           <li key={item.path}>
             <Link
@@ -183,7 +182,6 @@ const Navbar = () => {
               { path: '/anime', label: 'Anime' },
               { path: '/top-rated', label: 'Top Rated' },
               { path: '/popular', label: 'Popular' },
-              { path: '/upcoming', label: 'Upcoming' },
             ].map((item) => (
               <li key={item.path}>
                 <Link

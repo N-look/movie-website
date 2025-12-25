@@ -1,6 +1,12 @@
-import { Play } from "lucide-react";
+import { Play, Clock } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+
+// Check if a date is in the future
+const isUnreleased = (dateString) => {
+  if (!dateString) return false;
+  return new Date(dateString) > new Date();
+};
 
 const Moviepage = () => {
   const { id } = useParams();
@@ -18,6 +24,8 @@ const Moviepage = () => {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+    
     fetch(`https://api.themoviedb.org/3/movie/${id}?language=en-US`, options)
       .then((res) => res.json())
       .then((res) => setMovie(res))
@@ -54,44 +62,62 @@ const Moviepage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#181818] text-white">
+    <div className="min-h-screen bg-[#0b0b0b] text-white relative overflow-x-hidden">
+        {/* Ambient Background Gradients */}
+        <div className="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+            <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-900/10 rounded-full blur-[120px]" />
+            <div className="absolute top-[20%] right-[-10%] w-[40%] h-[40%] bg-blue-900/10 rounded-full blur-[120px]" />
+        </div>
+
       <div
-        className="relative h-[60vh] flex item-end"
+        className="relative h-[70vh] flex item-end z-10"
         style={{
           backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-t from-[#181818] via-transparent to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0b0b0b] via-[#0b0b0b]/60 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0b0b0b]/80 via-transparent to-transparent"></div>
 
-        <div className="relative z-10 flex items-end p-8 gap-8">
+        <div className="relative z-10 flex items-end p-8 gap-8 w-full max-w-[1400px] mx-auto">
           <img
             src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-            className="rounded-lg shadow-lg w-48 hidden md:block"
+            className="rounded-xl shadow-2xl w-64 hidden md:block border border-white/10"
           />
 
-          <div>
-            <h1 className="text-4xl font-bold mb-2">{movie.title}</h1>
-            <div className="flex items-center gap-4 mb-2">
-              <span>⭐ {movie.vote_average?.toFixed(1)}</span>
-              <span>{movie.release_date}</span>
-              <span>{movie.runtime} min</span>
+          <div className="flex-1">
+            <h1 className="text-4xl md:text-6xl font-bold mb-4 drop-shadow-2xl">{movie.title}</h1>
+            <div className="flex items-center gap-4 mb-6 text-sm md:text-base text-gray-200">
+              <span className="flex items-center gap-1 text-yellow-400 font-medium">
+                ⭐ {movie.vote_average?.toFixed(1)}
+              </span>
+              <span>•</span>
+              <span>{new Date(movie.release_date).getFullYear()}</span>
+              <span>•</span>
+              <span>{Math.floor(movie.runtime / 60)}h {movie.runtime % 60}m</span>
             </div>
-            <div className="flex flex-wrap gap-2 mb-4">
+            <div className="flex flex-wrap gap-2 mb-6">
               {movie.genres.map((genre) => (
-                <span className="bg-white/10 backdrop-blur-sm px-4 py-1.5 rounded-2xl text-sm border border-white/10">
+                <span key={genre.id} className="bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full text-sm font-medium border border-white/10 hover:bg-white/20 transition-colors cursor-default">
                   {genre.name}
                 </span>
               ))}
             </div>
-            <p className="max-w-2xl text-gray-200 mb-4">{movie.overview}</p>
+            <p className="max-w-2xl text-gray-200 mb-8 text-lg leading-relaxed line-clamp-3">{movie.overview}</p>
             <div className="flex flex-wrap gap-4">
-              <Link to={`/watch/movie/${movie.id}`}>
-                <button className="flex justify-center items-center bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 px-6 rounded-2xl cursor-pointer text-sm md:text-base font-medium shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 hover:scale-105 transition-all duration-300">
-                  <Play className="mr-2 w-4 h-5 md:w-5 md:h-5" /> Watch Now
-                </button>
-              </Link>
+              {isUnreleased(movie.release_date) ? (
+                <div className="flex items-center gap-2 bg-yellow-500/20 border border-yellow-500/50 text-yellow-300 py-3 px-6 rounded-2xl text-sm md:text-base font-medium">
+                  <Clock className="w-5 h-5" />
+                  Not Yet Released
+                </div>
+              ) : (
+                <Link to={`/watch/movie/${movie.id}`}>
+                  <button className="flex justify-center items-center bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 px-6 rounded-2xl cursor-pointer text-sm md:text-base font-medium shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 hover:scale-105 transition-all duration-300">
+                    <Play className="mr-2 w-4 h-5 md:w-5 md:h-5" /> Watch Now
+                  </button>
+                </Link>
+              )}
               {trailerKey && (
                 <a
                   href={`https://www.youtube.com/watch?v=${trailerKey}`}

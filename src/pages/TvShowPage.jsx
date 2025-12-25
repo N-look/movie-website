@@ -1,4 +1,4 @@
-import { Play } from "lucide-react";
+import { Play, Clock } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -7,6 +7,12 @@ import "swiper/css";
 import "swiper/css/navigation";
 import MovieGrid from "../components/MovieGrid";
 import { FreeMode } from "swiper/modules";
+
+// Check if a date is in the future
+const isUnreleased = (dateString) => {
+  if (!dateString) return false;
+  return new Date(dateString) > new Date();
+};
 
 
 const TvShowPage = () => {
@@ -27,6 +33,8 @@ const TvShowPage = () => {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+    
     // Fetch TV show details
     fetch(`https://api.themoviedb.org/3/tv/${id}?language=en-US`, options)
       .then((res) => res.json())
@@ -85,9 +93,15 @@ const TvShowPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#181818] text-white">
+    <div className="min-h-screen bg-[#0b0b0b] text-white relative overflow-x-hidden">
+        {/* Ambient Background Gradients */}
+        <div className="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+            <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-900/10 rounded-full blur-[120px]" />
+            <div className="absolute top-[20%] right-[-10%] w-[40%] h-[40%] bg-blue-900/10 rounded-full blur-[120px]" />
+        </div>
+
       {/* Hero Section */}
-      <div className="relative h-[70vh] flex items-end pb-16">
+      <div className="relative h-[70vh] flex items-end pb-16 z-10">
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{
@@ -97,27 +111,35 @@ const TvShowPage = () => {
             filter: 'brightness(0.5)'
           }}
         ></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-[#181818] via-transparent to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0b0b0b] via-[#0b0b0b]/60 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0b0b0b]/80 via-transparent to-transparent"></div>
         
         <div className="relative z-10 container mx-auto px-4">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">{tvShow.name}</h1>
-          <div className="flex items-center space-x-4 mb-4">
-            <span className="text-green-500 font-semibold">
+          <h1 className="text-4xl md:text-6xl font-bold mb-4 drop-shadow-2xl">{tvShow.name}</h1>
+          <div className="flex items-center space-x-4 mb-4 text-sm md:text-base">
+            <span className="text-green-400 font-bold">
               {Math.round(tvShow.vote_average * 10)}% Match
             </span>
             <span>{tvShow.first_air_date?.split('-')[0]}</span>
-            <span className="border border-gray-400 px-1 text-xs">
+            <span className="border border-white/30 px-2 py-0.5 text-xs rounded">
               {tvShow.episode_run_time?.[0] || 'N/A'}m
             </span>
-            <span className="border border-gray-400 px-1 text-xs">
+            <span className="border border-white/30 px-2 py-0.5 text-xs rounded">
               {tvShow.status}
             </span>
           </div>
-          <p className="max-w-3xl text-gray-300 mb-6">{tvShow.overview}</p>
+          <p className="max-w-3xl text-gray-200 mb-8 text-lg leading-relaxed line-clamp-3">{tvShow.overview}</p>
           <div className="flex space-x-4">
-            <Link to={`/watch/tv/${id}/1/1`} className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-3 rounded-2xl font-semibold flex items-center shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 hover:scale-105 transition-all duration-300">
-              <Play className="w-5 h-5 mr-2" /> Play
-            </Link>
+            {isUnreleased(tvShow.first_air_date) ? (
+              <div className="flex items-center gap-2 bg-yellow-500/20 border border-yellow-500/50 text-yellow-300 px-6 py-3 rounded-2xl font-semibold">
+                <Clock className="w-5 h-5" />
+                Not Yet Released
+              </div>
+            ) : (
+              <Link to={`/watch/tv/${id}/1/1`} className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-3 rounded-2xl font-semibold flex items-center shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 hover:scale-105 transition-all duration-300">
+                <Play className="w-5 h-5 mr-2" /> Play
+              </Link>
+            )}
             {trailerKey && (
               <a
                 href={`https://www.youtube.com/watch?v=${trailerKey}`}

@@ -27,7 +27,7 @@ const stripHtml = (html) => {
   return html.replace(/<[^>]*>/g, '');
 };
 
-const AnimeGrid = ({ title = 'Anime', showTitle = true, sort = ['TRENDING_DESC'] }) => {
+const AnimeGrid = ({ sort = ['TRENDING_DESC'] }) => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -139,8 +139,6 @@ const AnimeGrid = ({ title = 'Anime', showTitle = true, sort = ['TRENDING_DESC']
 
   return (
     <div className="text-white">
-      {showTitle && <h2 className="text-3xl font-bold mb-8 text-center">{title}</h2>}
-
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
         {items.map((item) => (
           <div

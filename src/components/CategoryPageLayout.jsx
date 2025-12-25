@@ -41,7 +41,7 @@ const CategoryPageLayout = ({
   }, [mediaType]);
 
   return (
-    <div className="min-h-screen bg-[#181818] text-white">
+    <div className="min-h-screen bg-[#0b0b0b] text-white">
       {/* Hero Section with cycling background */}
       {showHero && (
         <CategoryHero 
@@ -53,19 +53,11 @@ const CategoryPageLayout = ({
 
       {/* Content Section */}
       <div className="p-4 md:p-8">
-        {(() => {
-          const suffix = mediaType === 'tv' ? 'Shows' : mediaType === 'movie' ? 'Movies' : '';
-          const computedTitle = suffix ? `${title} ${suffix}` : title;
-          const Grid = GridComponent;
-          return (
-            <Grid 
-              title={computedTitle}
-              category={category}
-              apiEndpoint={apiEndpoint}
-              mediaType={mediaType}
-            />
-          );
-        })()}
+        <GridComponent 
+          category={category}
+          apiEndpoint={apiEndpoint}
+          mediaType={mediaType}
+        />
       </div>
     </div>
   );
